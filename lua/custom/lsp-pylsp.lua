@@ -9,7 +9,7 @@ return {
           formatEnabled = false,
           format = {}, -- TODO: auto format imports with isort
 
-          extendSelect = { 'I', 'C90', 'A', 'B' }, -- TODO: test Pylint linter and add it?
+          extendSelect = { 'C90', 'A', 'B' }, -- TODO: test Pylint linter and add it?
 
           line_length = 88,
           ignore = {

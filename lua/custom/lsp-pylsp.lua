@@ -6,10 +6,10 @@ return {
         ruff = {
           -- formatter + Linter + isort
           enabled = true,
-          formatEnabled = false,
-          format = {}, -- TODO: auto format imports with isort
+          formatEnabled = true,
+          format = { 'I' },
 
-          extendSelect = { 'C90', 'A', 'B' }, -- TODO: test Pylint linter and add it?
+          extendSelect = { 'C90', 'A', 'B', 'PL' },
 
           line_length = 88,
           ignore = {

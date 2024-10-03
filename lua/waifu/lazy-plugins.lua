@@ -1,5 +1,5 @@
 require('lazy').setup({
-  { import = 'lazy_plugin' },
+  { import = 'waifu.lazy' },
 
   -- LSP Plugins
   {

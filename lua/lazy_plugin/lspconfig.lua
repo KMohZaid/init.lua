@@ -164,6 +164,8 @@ return {
       -- But for many setups, the LSP (`ts_ls`) will work just fine
       -- ts_ls = {},
       --
+      rust_analyzer = {},
+      gopls = {},
 
       pylsp = require 'custom.lsp-pylsp',
       lua_ls = {
@@ -181,7 +183,6 @@ return {
         },
       },
     }
-
     -- Ensure the servers and tools above are installed
     --  To check the current status of installed tools and/or manually install
     --  other tools, you can run

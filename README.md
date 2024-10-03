@@ -12,11 +12,18 @@ It is because i want to keep my future config clean and more like i want it to b
 ## Refactoring TODO
 
 - [x] Clear out unnecessary comments(leave the one i am still learning from) and add comments to where i should divide it into files eg. autocmds.lua, options.lua, etc.
+<<<<<<< HEAD
 - [x] Turn this into a modular config.
     - [x] Divide it into multiple files.
     - [x] Convert plugins.lua into a folder with multiple files...
     - [x] Copy custom folder plugins into new folder.
     - [ ] Get rid of kickstart plugin folder
+=======
+- [ ] Turn this into a modular config.
+    - [ ] Divide it into multiple files.
+    - [ ] Convert plugins.lua into a folder with multiple files...
+    - [ ] Get rid of kickstart lugin folder and copy custom folder plugins into new folder.
+>>>>>>> c87e995eaa2d3d2c62503e56040d9e1d43b9d2ab
 - [ ] Lastly, learn and remove comments
 
 ## TODO

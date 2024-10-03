@@ -11,7 +11,7 @@ It is because i want to keep my future config clean and more like i want it to b
 
 ## Refactoring TODO
 
-- [ ] Clear out unnecessary comments(leave the one i am still learning from) and add comments to where i should divide it into files eg. autocmds.lua, options.lua, etc.
+- [x] Clear out unnecessary comments(leave the one i am still learning from) and add comments to where i should divide it into files eg. autocmds.lua, options.lua, etc.
 - [ ] Turn this into a modular config.
     - [ ] Divide it into multiple files.
     - [ ] Convert plugins.lua into a folder with multiple files...

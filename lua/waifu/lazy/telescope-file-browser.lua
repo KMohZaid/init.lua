@@ -5,7 +5,9 @@ return {
     require('telescope').setup {
       defaults = {
         file_ignore_patterns = {
-          'node_modules',
+          'node_modules', -- nodejs modules folder
+          'pycache', -- python cache folder
+          'venv', -- python virtual environment folder
         },
       },
     }

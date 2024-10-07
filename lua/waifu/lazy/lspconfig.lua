@@ -140,6 +140,8 @@ return {
                   formatEnabled = false,
 
                   extendSelect = { 'C90', 'A', 'B', 'PL' },
+
+                  line_length = 88,
                   ignore = {
                     'E501', -- line too long
                   },
@@ -150,7 +152,13 @@ return {
                 -- auto-completion options
                 jedi_completion = { fuzzy = true },
                 -- type checker
-                pylsp_mypy = { enabled = false }, -- mypy is too slow, disable it for now
+                pylsp_mypy = { -- mypy is beast, too slow(dangerous) without optimizing (taming)
+                  enabled = true,
+                  report_progress = true,
+                  dmypy = true, -- not compatible with "live_mode" so live_mode is disabled
+                  live_mode = false,
+                  overrides = { '--cache-fine-grained', true }, -- true must specified, otherwise it doesn't work with pylsp...
+                },
 
                 ------- DiSABLED -------
                 -- formatter options

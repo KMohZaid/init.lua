@@ -147,7 +147,7 @@ return {
                   },
                 },
                 -- formatter options
-                black = { enabled = true, line_length = 80 },
+                black = { enabled = true, line_length = 9999 }, -- ignore line length format...
                 isort = { enabled = true, float_to_top = true },
                 -- auto-completion options
                 jedi_completion = { fuzzy = true },

@@ -141,13 +141,13 @@ return {
 
                   extendSelect = { 'C90', 'A', 'B', 'PL' },
 
-                  line_length = 88,
+                  line_length = 80,
                   ignore = {
                     'E501', -- line too long
                   },
                 },
                 -- formatter options
-                black = { enabled = true, line_length = 88 },
+                black = { enabled = true, line_length = 80 },
                 isort = { enabled = true, float_to_top = true },
                 -- auto-completion options
                 jedi_completion = { fuzzy = true },

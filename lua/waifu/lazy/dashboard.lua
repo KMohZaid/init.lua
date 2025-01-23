@@ -42,6 +42,7 @@ end
 -- Set up the dashboard with the random header
 return {
   'nvimdev/dashboard-nvim',
+  enabled = false,
   event = 'VimEnter',
   dependencies = {
     'nvim-tree/nvim-web-devicons',

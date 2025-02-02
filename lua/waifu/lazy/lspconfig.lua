@@ -130,6 +130,8 @@ return {
         gopls = {},
 
         -- TODO: need to install python-lsp-ruff, python-lsp-black, pyls-isort and pyls-mypy manually for now. So make it automated
+        -- :PylspInstall python-lsp-ruff python-lsp-black python-lsp-isort
+        -- pyls-mypy -- some issue with installtion, also not using right now
         pylsp = {
           settings = {
             pylsp = {
@@ -137,7 +139,7 @@ return {
                 ruff = {
                   -- formatter + Linter + isort
                   enabled = true,
-                  formatEnabled = false,
+                  formatEnabled = true,
 
                   extendSelect = { 'C90', 'A', 'B', 'PL' },
 
@@ -147,7 +149,6 @@ return {
                   },
                 },
                 -- formatter options
-                black = { enabled = true, line_length = 9999 }, -- ignore line length format...
                 isort = { enabled = true, float_to_top = true },
                 -- auto-completion options
                 jedi_completion = { fuzzy = true },
@@ -162,6 +163,7 @@ return {
 
                 ------- DiSABLED -------
                 -- formatter options
+                black = { enabled = false, line_length = 80 },
                 autopep8 = { enabled = false },
                 yapf = { enabled = false },
                 -- linter options

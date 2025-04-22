@@ -14,6 +14,13 @@ return {
   },
   { 'Bilal2453/luvit-meta', lazy = true },
   {
+    'rust-lang/rust.vim',
+    ft = 'rust',
+    init = function()
+      vim.g.rustfmt_autosave = 1
+    end,
+  },
+  {
     -- Main LSP Configuration
     'neovim/nvim-lspconfig',
     dependencies = {
@@ -126,7 +133,26 @@ return {
         -- ts_ls = {},
         --
 
-        rust_analyzer = {},
+        rust_analyzer = {
+          settings = {
+            ['rust-analyzer'] = {
+              diagnostics = {
+                enable = true,
+                experimental = {
+                  enable = true,
+                },
+                styleLints = {
+                  enable = true,
+                },
+              },
+              inlayHints = { -- TODO: add other inlayHints
+                chainingHints = true,
+                parameterHints = true,
+                typeHints = true,
+              },
+            },
+          },
+        },
         gopls = {},
 
         -- TODO: need to install python-lsp-ruff, python-lsp-black, pyls-isort and pyls-mypy manually for now. So make it automated

@@ -220,6 +220,7 @@ return {
       }
       local ensure_installed = {
         'stylua', -- Used to format Lua code
+        'prettierd', -- Used to format JS/TS, html, css, etc.
       }
       vim.list_extend(ensure_installed, vim.tbl_keys(servers or {}))
 

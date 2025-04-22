@@ -36,6 +36,45 @@ return {
       'hrsh7th/cmp-nvim-lsp',
     },
     config = function()
+      -- LSP Diagnostics : Float window
+      --
+      -- cc : https://www.reddit.com/r/neovim/comments/tkcvlc/comment/i1spclk/
+      -- disable virtual_text (inline) diagnostics and use floating window
+      -- format the message such that it shows source, message and
+      -- the error code. Show the message with <space>e
+      vim.diagnostic.config {
+        virtual_text = true, -- this is to know where issue is (for now, will use curve underline soon if possible)
+        signs = true,
+        float = {
+          border = 'single',
+          format = function(diagnostic)
+            return string.format('%s (%s) [%s]', diagnostic.message, diagnostic.source, diagnostic.code or diagnostic.user_data.lsp.code)
+          end,
+        },
+      }
+      -- Below autocmd open float window when there is diagnostic for current line
+      -- cc : https://neovim.discourse.group/t/how-to-show-diagnostics-on-hover/3830/5
+      vim.api.nvim_create_autocmd({ 'CursorHold' }, {
+        pattern = '*',
+        callback = function()
+          for _, winid in pairs(vim.api.nvim_tabpage_list_wins(0)) do
+            if vim.api.nvim_win_get_config(winid).zindex then
+              return
+            end
+          end
+          vim.diagnostic.open_float {
+            scope = 'line', -- changed from 'cursor' to 'line' to show diagnostic for current line, 'cursor' will show for speciic line position eg. on last character if ';' is missing on line
+            focusable = false,
+            close_events = {
+              'CursorMoved',
+              'CursorMovedI',
+              'BufHidden',
+              'InsertCharPre',
+              'WinLeave',
+            },
+          }
+        end,
+      })
       --  This function gets run when an LSP attaches to a particular buffer.
       --    That is to say, every time a new file is opened that is associated with
       --    an lsp (for example, opening `main.rs` is associated with `rust_analyzer`) this

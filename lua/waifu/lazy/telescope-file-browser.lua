@@ -10,9 +10,14 @@ return {
           'venv', -- python virtual environment folder
         },
       },
+      extensions = {
+        file_browser = {
+          hidden = true,
+        },
+      },
     }
     vim.keymap.set('n', '<space>e', function()
-      require('telescope').extensions.file_browser.file_browser { cwd = vim.fn.expand '%:p:h' }
+      require('telescope').extensions.file_browser.file_browser { cwd = vim.fn.expand '%:p:h' } -- relative to the current file, not cwd (% -> filename/file path relative to cwd, :p -> full path, :h -> parent dir)
     end, { desc = 'File [E]xplorer' })
   end,
 }

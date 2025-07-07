@@ -1,3 +1,25 @@
+-- Set default options
+vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
+vim.opt.softtabstop = 4
+
+-- XXX: vim-slueth doesn't set tabstop and shiftwidth for HTML and related files
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = {
+    'html',
+    'javascript',
+    'typescript',
+    'typescriptreact',
+    'typescript.tsx',
+  },
+  callback = function()
+    vim.bo.tabstop = 2
+    vim.bo.shiftwidth = 2
+    vim.bo.softtabstop = 2
+    vim.bo.expandtab = true
+  end,
+})
+
 return {
 
   'tpope/vim-sleuth', -- Detect tabstop and shiftwidth automatically

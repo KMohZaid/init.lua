@@ -213,7 +213,6 @@ return {
             -- TODO: add keys, lazyvim had good one but for now they are conflicting with global keymap for goto definitiona and stuff. also LazyVim variable doesn't exist for me
           },
         },
-        eslint = {},
         --
 
         rust_analyzer = {
@@ -304,6 +303,7 @@ return {
       local ensure_installed = {
         'stylua', -- Used to format Lua code
         'prettierd', -- Used to format JS/TS, html, css, etc.
+        'biome', -- prettier alternative, good and also have import sorting
       }
       vim.list_extend(ensure_installed, vim.tbl_keys(servers or {}))
 

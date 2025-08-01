@@ -36,11 +36,14 @@ return { -- Autoformat
       -- python = { 'isort', 'black' },
       --
       -- You can use 'stop_after_first' to run the first available formatter from the list
-      javascript = { 'prettierd', 'prettier', stop_after_first = true },
-      html = { 'prettierd', 'prettier', stop_after_first = true },
-      css = { 'prettierd', 'prettier', stop_after_first = true },
-      scss = { 'prettierd', 'prettier', stop_after_first = true },
-      json = { 'prettierd', 'prettier', stop_after_first = true },
+      javascript = { 'prettierd', 'biome-check', stop_after_first = false },
+      javascriptreact = { 'prettierd', 'biome-check', stop_after_first = false },
+      html = { 'prettierd', 'biome-check', stop_after_first = false },
+      css = { 'prettierd', 'biome-check', stop_after_first = false },
+      scss = { 'prettierd', 'biome-check', stop_after_first = false },
+      json = { 'prettierd', 'biome-check', stop_after_first = false },
+      typescript = { 'prettierd', 'biome-check', stop_after_first = false },
+      typescriptreact = { 'prettierd', 'biome-check', stop_after_first = false },
     },
   },
 }

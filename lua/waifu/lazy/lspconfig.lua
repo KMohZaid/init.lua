@@ -126,6 +126,14 @@ return {
           -- or a suggestion from your LSP for this to activate.
           map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction', { 'n', 'x' })
 
+          -- TODO: add more keymaps
+
+          -- Toggle inlay hints, by default it is enabled
+          vim.lsp.inlay_hint.enable()
+          map('<leader>ci', function()
+            vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { 0 }, { 0 })
+          end, 'Toggle [I]nlay Hints', { 'n', 'x' })
+
           -- The following two autocommands are used to highlight references of the
           -- word under your cursor when your cursor rests there for a little while.
           --
@@ -194,18 +202,33 @@ return {
                 },
               },
             },
+            javascript = { -- TODO: copy from typescript (better use common variable for both)
+              -- show like "3 references" but it is not working right now  TODO: fix it
+              referencesCodeLens = { enabled = true, showOnAllFunctions = true },
+            },
             typescript = {
-              updateImportsOnFileMove = { enabled = 'always' },
+              -- XXX: [VSCode ONLY] Show references/implementations code lens on all functions
+              -- eg. "3 references"
+              referencesCodeLens = { enabled = true, showOnAllFunctions = true },
+              implementationCodeLens = { enabled = true, showOnInterfaceMethods = true },
+
+              updateImportsOnFileMove = { enabled = 'always' }, -- TODO: fix, works in vs code only? also add it in javascript
+
               suggest = {
-                completeFunctionCalls = true,
+                completeFunctionCalls = true, -- TODO: add in javascript
               },
-              inlayHints = {
+
+              -- TODO: add some custom preferences?
+              preferences = {},
+              format = {}, -- TODO: also this
+
+              inlayHints = { -- TODO: add for javascript
                 enumMemberValues = { enabled = true },
                 functionLikeReturnTypes = { enabled = true },
-                parameterNames = { enabled = 'literals' },
+                parameterNames = { enabled = 'all', suppressWhenArgumentMatchesName = true },
                 parameterTypes = { enabled = true },
                 propertyDeclarationTypes = { enabled = true },
-                variableTypes = { enabled = false },
+                variableTypes = { enabled = true },
               },
             },
           },

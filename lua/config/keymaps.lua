@@ -1,3 +1,79 @@
+-- -- TODO: REview and remove conflicting with LazyVim keymaps
+--
+--
+--
 -- Keymaps are automatically loaded on the VeryLazy event
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
+
+-- Diagnostic keymaps
+vim.keymap.set("n", "<leader>Q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
+
+-- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
+-- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
+-- is not what someone will guess without a bit more experience.
+--
+-- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
+-- or just use <C-\><C-n> to exit terminal mode
+vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
+
+-- Keybinds to make split navigation easier.
+--  Use CTRL+<hjkl> to switch between windows
+vim.keymap.set("n", "<C-h>", "<C-w><C-h>", { desc = "Move focus to the left window" })
+vim.keymap.set("n", "<C-l>", "<C-w><C-l>", { desc = "Move focus to the right window" })
+vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
+vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
+
+-- TODO: Do proper commenting and descriptions of below remaps/keymaps. And also add some new ones
+
+-- Make "c" or "C" doesn't mess up with unnamed register
+-- XXX: added visual mode too, so it works for selected text changes (not copy to clipboard or unnamed register)
+vim.keymap.set({ "n", "v" }, "c", [["_c]], { desc = "Safe unnamed register from change cmd copy" })
+vim.keymap.set({ "n", "v" }, "C", [["_C]], { desc = "Safe unnamed register from change cmd copy" })
+
+-- Safe from x now
+vim.keymap.set("n", "x", [["_x]], { desc = 'Safe unnamed register from "x" cmd cut' })
+
+-- System clipboard with <leader>
+vim.keymap.set({ "n", "v" }, "<leader>d", [["+d]], { desc = "Cut to system clipboard" })
+vim.keymap.set(
+  { "n", "v" },
+  "<leader>D",
+  [["+D]],
+  { desc = "Cut current line from cursor to end(d$ == D) into system clipboard" }
+)
+--
+vim.keymap.set({ "n", "v" }, "<leader>y", [["+y]], { desc = "Yank to system clipboard" })
+vim.keymap.set(
+  { "n", "v" },
+  "<leader>Y",
+  [["+Y]],
+  { desc = "Yank current line from cursor to end(y$ == Y) into system clipboard" }
+)
+--
+vim.keymap.set({ "n", "v" }, "<leader>p", [["+p]], { desc = "Paste-after from system clipboard" })
+vim.keymap.set({ "n", "v" }, "<leader>P", [["+P]], { desc = "Paste-before from system clipboard" })
+
+---- select all shortcut
+vim.keymap.set({ "n", "v" }, "<C-a>", "gg0vG$", { desc = "Select all (gg -> 0 -> v -> G -> $)" })
+
+---- Esc with Ctrl+c
+vim.keymap.set("n", "<C-c>", "<Esc>", { desc = "Escape" })
+
+-- NOTE: Below are some cool remaps...
+
+-- Move lines up/down
+-- :m
+vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move current line down", silent = true })
+vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move current line up", silent = true })
+
+-- Join below line without changing cursor position (mark position and then move to it)
+vim.keymap.set("n", "J", "mzJ`z")
+
+-- Move half screen down/up and center cursor vertically
+vim.keymap.set("n", "<C-d>", "<C-d>zz")
+vim.keymap.set("n", "<C-u>", "<C-u>zz")
+
+-- on search result move to next/prev and ensure that screen is centered vertically + unfold if anything is folded
+vim.keymap.set("n", "n", "nzzzv")
+vim.keymap.set("n", "N", "Nzzzv")

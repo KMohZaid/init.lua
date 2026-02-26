@@ -7,6 +7,10 @@ return {
         files = {
           hidden = true, -- show hidden files
         },
+
+        grep = {
+          --    args = { "--hidden" }, -- show hidden files in grep searches
+        },
       },
     },
   },

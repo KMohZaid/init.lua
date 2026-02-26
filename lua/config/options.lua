@@ -55,3 +55,10 @@ vim.opt.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.opt.scrolloff = 10
+
+-- remove dim path color from picker and explorer
+-- cc : https://github.com/folke/snacks.nvim/discussions/1688
+vim.api.nvim_set_hl(0, "SnacksPickerDir", { link = "Text" })
+vim.api.nvim_set_hl(0, "SnacksPickerPathHidden", { link = "Text" })
+vim.api.nvim_set_hl(0, "SnacksPickerPathIgnored", { link = "Comment" })
+vim.api.nvim_set_hl(0, "SnacksPickerGitStatusUntracked", { link = "Special" })

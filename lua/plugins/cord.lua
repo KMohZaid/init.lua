@@ -1,91 +1,106 @@
+vim.g.cord_defer_startup = true
+
 return {
-  'vyfor/cord.nvim',
-  build = ':Cord update',
+  "vyfor/cord.nvim",
+  build = ":Cord update",
   config = function()
     -- Configuration for cord.nvim
-    require('cord').setup {
+    require("cord").setup({
       display = {
-        theme = 'atom',
+        theme = "minecraft",
+        flavor = "accent",
+        view = "full",
+      },
+      timestamp = {
+        enabled = true,
+        shared = true,
       },
       idle = {
+        enabled = true,
+        ignore_focus = true,
         unidle_on_focus = false,
+        smart_idle = true,
       },
-      variables = {
-        -- Git Status: Get the current Git branch
-        git_status = function()
-          local git_branch = vim.fn.system('git branch --show-current 2> /dev/null || echo ""'):gsub('\n', '')
-
-          if git_branch == '' then
-            return 'Not a Git Repo :('
-          end
-          return string.format('On Branch "%s"', git_branch)
-        end,
-
-        -- Workspace-related variables
-        workspace = '_______ workspace',
-        cursor_line_char = function(opts)
-          return string.format('%d:%d', opts.cursor_line, opts.cursor_char)
-        end,
-        problems = function()
-          local counts = vim.diagnostic.count(0) -- its a table of severity index mapping to problems count eg. { [1] = 2, [3] = 5 }
-          local total = 0
-          for _, v in pairs(counts) do
-            total = total + v
-          end
-          return tostring(total)
-        end,
-      },
-
-      --  TODO: diagnostics module error, fix it
-      -- plugins = {
-      --   diagnostics = {
-      --     scope = 'workspace', -- 'buffer' (default) or 'workspace': Scope of diagnostics to display
-      --     severity = { min = vim.diagnostic.severity.WARN }, -- Diagnostic severity filter
-      --     override = true, -- Whether to override default text configurations (recommended: true)
-      --   },
-      -- },
 
       -- Text section where we show the information
       text = {
-        workspace = 'Line ${cursor_line_char} | Problems ${problems}',
-        editing = 'Editing ${filename} | ${git_status}',
-        viewing = 'Viewing ${filename} | ${git_status}',
+        workspace = "",
+        -- workspace = '"${workspace}"', -- ${git_status}', -- ${problems_workspace}',
+        --        workspace = "Line ${cursor_line_char} | Problems ${problems}",
+        editing = "💻 Editing", -- ${filename_with_pos}", -- ${problems}",
+        viewing = "💻 Viewing", -- ${filename_with_pos}", -- ${problems}",
       },
 
       -- Button configuration
       buttons = {
         {
-          label = function(opts) -- opts.repo_url is url of git repo
-            -- return opts.repo_url and 'View Repository 🚀' or 'Be cool, use Neovim 😎'
-            return 'Be cool, use Neovim 😎'
-          end,
-          url = function(opts)
-            -- return opts.repo_url or 'https://neovim.io'
-            return 'https://neovim.io'
-          end,
+          label = "Be cool, use Neovim 😎",
+          url = "https://neovim.io",
         },
         {
-          label = 'Thanks thePrimeagen',
-          url = 'https://youtu.be/Qo3dX87gTrk',
+          label = "Thanks thePrimeagen",
+          url = "https://youtu.be/Qo3dX87gTrk",
         },
       },
 
-      -- Hooks to update git branch on workspace change
-      hooks = {
-        workspace_change = function(opts)
-          -- Update git_branch on workspace change
-          git_branch = vim.fn.system('git branch --show-current'):gsub('\n', '')
+      variables = {
+        -- Git Status: Get the current Git branch
+        git_status = function()
+          local git_branch = vim.fn.system('git branch --show-current 2> /dev/null || echo ""'):gsub("\n", "")
+
+          if git_branch == "" then
+            return "[Not a Git Repo :(]"
+          end
+          return string.format('On Branch "%s"', git_branch)
+        end,
+
+        filename_with_pos = function(opts)
+          return string.format("%s:%s", opts.filename, opts.cursor_line_char(opts))
+        end,
+        cursor_line_char = function(opts)
+          return string.format("%d:%d", opts.cursor_line, opts.cursor_char)
+        end,
+
+        problems_helper = function(for_workspace)
+          local bufnr
+          if for_workspace then
+            bufnr = nil
+          else
+            bufnr = 0
+          end
+
+          local count_opts = {
+            severity = {
+              min = vim.diagnostic.severity.WARN, -- only show warn and error
+            },
+          }
+
+          local total = 0
+          for _, count in pairs(vim.diagnostic.count(bufnr, count_opts)) do
+            total = total + count
+          end
+
+          return total > 0 and (" ⚠️ " .. total) or ""
+        end,
+        problems_workspace = function(opts)
+          return opts.problems_helper(true)
+        end,
+        problems = function(opts)
+          return opts.problems_helper(false)
         end,
       },
 
-      -- Run :Cord restart after any LSP attaches
-      vim.api.nvim_create_autocmd('LspAttach', {
-        callback = function(_)
-          vim.schedule(function()
-            vim.cmd 'Cord restart'
-          end)
-        end,
-      }),
-    }
+      extensions = {
+        resolver = { -- Purpose: Provides specialized metadata resolvers for accurate filetype and workspace detection in edge cases where standard detection falls short.
+          sources = { true, oil = false },
+        },
+        persistent_timer = { -- Persistent elapsed timer
+          -- https://github.com/vyfor/cord.nvim/blob/master/.github/wiki/Extensions.md#-persistent-timer
+          mode = "active",
+          file = "/tmp/neovim_cord_rpc_persistent_timer.json",
+          save_on = { "exit" },
+        },
+      },
+    })
   end,
 }

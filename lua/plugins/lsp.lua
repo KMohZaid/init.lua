@@ -170,8 +170,42 @@ return {
 
           -- disable pyright lsp
           pyright = { enabled = false },
-          -- disable pylsp
-          pylsp = { enabled = false },
+          -- use mypy with pylsp, trying out
+          pylsp = {
+            enabled = false, -- quick way to turn it off if i find it not properly working but i want to try soon again
+            settings = {
+              pylsp = {
+                plugins = {
+                  -- disable everything
+                  pycodestyle = { enabled = false },
+                  pyflakes = { enabled = false },
+                  pylint = { enabled = false },
+                  rope_autoimport = { enabled = false },
+                  rope_completion = { enabled = false },
+                  mccabe = { enabled = false },
+                  yapf = { enabled = false },
+                  autopep8 = { enabled = false },
+                  flake8 = { enabled = false },
+                  jedi_completion = { enabled = false },
+                  jedi_definition = { enabled = false },
+                  jedi_hover = { enabled = false },
+                  jedi_references = { enabled = false },
+                  jedi_signature_help = { enabled = false },
+                  jedi_symbols = { enabled = false },
+
+                  -- enable only mypy
+                  pylsp_mypy = {
+                    mypy_command = vim.env.HOME .. "/.venv/bin/mypy",
+                    dmypy_command = vim.env.HOME .. "/.venv/bin/dmypy",
+                    enabled = true,
+                    live_mode = true,
+                    -- overrides = { "--implicit-optional", true }, -- wanted to keep parameter optional but i should use proper typing to reduce error chance
+                    strict = true, -- strict mode, trying out
+                  },
+                },
+              },
+            },
+          },
 
           ruff = {
             init_options = {
@@ -401,6 +435,14 @@ return {
         },
         virtual_lines = { -- lines of graph below line, pointing on each diagnostic start character
           current_line = true, -- for current line onlu
+          format = function(diagnostic)
+            return string.format(
+              "[%s] (%s): %s",
+              diagnostic.source,
+              diagnostic.code or diagnostic.user_data.lsp.code,
+              diagnostic.message
+            )
+          end,
         },
         underline = true,
         signs = true,

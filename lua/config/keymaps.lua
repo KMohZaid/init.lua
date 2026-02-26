@@ -55,7 +55,7 @@ vim.keymap.set({ "n", "v" }, "<leader>p", [["+p]], { desc = "Paste-after from sy
 vim.keymap.set({ "n", "v" }, "<leader>P", [["+P]], { desc = "Paste-before from system clipboard" })
 
 ---- select all shortcut
-vim.keymap.set({ "n", "v" }, "<C-a>", "gg0vG$", { desc = "Select all (gg -> 0 -> v -> G -> $)" })
+vim.keymap.set({ "n", "v" }, "<C-a>", "ggVG$", { desc = "Select all (gg -> 0 -> v -> G -> $)" })
 
 ---- Esc with Ctrl+c
 vim.keymap.set("n", "<C-c>", "<Esc>", { desc = "Escape" })

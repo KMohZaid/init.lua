@@ -53,7 +53,7 @@ return {
         -- Be aware that you also will need to properly configure your LSP server to
         -- provide the code lenses.
         codelens = {
-          enabled = false,
+          enabled = true,
         },
         -- Enable this to enable the builtin LSP folding on Neovim.
         -- Be aware that you also will need to properly configure your LSP server to
@@ -96,7 +96,7 @@ return {
             { "<c-k>", function() return vim.lsp.buf.signature_help() end, mode = "i", desc = "Signature Help", has = "signatureHelp" },
             { "<leader>ca", vim.lsp.buf.code_action, desc = "Code Action", mode = { "n", "x" }, has = "codeAction" },
             { "<leader>cc", vim.lsp.codelens.run, desc = "Run Codelens", mode = { "n", "x" }, has = "codeLens" },
-            { "<leader>cC", vim.lsp.codelens.refresh, desc = "Refresh & Display Codelens", mode = { "n" }, has = "codeLens" },
+            { "<leader>cC", function() vim.lsp.codelens.enable(true) end, desc = "Refresh & Display Codelens", mode = { "n" }, has = "codeLens" },
             { "<leader>cR", function() Snacks.rename.rename_file() end, desc = "Rename File", mode ={"n"}, has = { "workspace/didRenameFiles", "workspace/willRenameFiles" } },
             { "<leader>cr", vim.lsp.buf.rename, desc = "Rename", has = "rename" },
             { "<leader>cA", LazyVim.lsp.action.source, desc = "Source Action", has = "codeAction" },
@@ -111,6 +111,10 @@ return {
           },
           },
           stylua = { enabled = false },
+          clangd = { -- TODO: configure
+            enabled = true,
+            settings = {},
+          },
           lua_ls = {
             -- mason = false, -- set to false if you don't want this server to be installed with mason
             -- Use this to add any additional keymaps
@@ -119,6 +123,10 @@ return {
             -- keys = {},
             settings = {
               Lua = {
+                runtime = {
+                  version = "LuaJIT",
+                  pathStrict = false, -- This is where magic happens
+                },
                 workspace = {
                   checkThirdParty = false,
                 },
@@ -172,7 +180,7 @@ return {
           pyright = { enabled = false },
           -- use mypy with pylsp, trying out
           pylsp = {
-            enabled = false, -- quick way to turn it off if i find it not properly working but i want to try soon again
+            enabled = true,
             settings = {
               pylsp = {
                 plugins = {
@@ -186,21 +194,24 @@ return {
                   yapf = { enabled = false },
                   autopep8 = { enabled = false },
                   flake8 = { enabled = false },
-                  jedi_completion = { enabled = false },
-                  jedi_definition = { enabled = false },
-                  jedi_hover = { enabled = false },
-                  jedi_references = { enabled = false },
-                  jedi_signature_help = { enabled = false },
-                  jedi_symbols = { enabled = false },
+
+                  -- enable Jedi features
+                  jedi_completion = { enabled = true }, -- autocompletion
+                  jedi_hover = { enabled = true }, -- hover info
+                  jedi_references = { enabled = true }, -- find references
+                  jedi_signature_help = { enabled = true }, -- signature help
+                  jedi_symbols = { enabled = true }, -- codeLens / symbols
+                  jedi_code_lens = { enabled = true }, -- explicitly enable codeLens
 
                   -- enable only mypy
                   pylsp_mypy = {
                     mypy_command = vim.env.HOME .. "/.venv/bin/mypy",
                     dmypy_command = vim.env.HOME .. "/.venv/bin/dmypy",
-                    enabled = true,
-                    live_mode = true,
+                    enabled = false,
+                    live_mode = false,
+                    dmypy = false, -- checking if it doesnt use much ram or not
                     -- overrides = { "--implicit-optional", true }, -- wanted to keep parameter optional but i should use proper typing to reduce error chance
-                    strict = true, -- strict mode, trying out
+                    strict = false, -- strict mode, trying out
                   },
                 },
               },
@@ -210,14 +221,16 @@ return {
           ruff = {
             init_options = {
               settings = {
-                configuration = vim.fn.expand("~/.config/ruff/ruff.toml"), -- INFO: its much simple to use ruff.toml directly. By default, it will take it but may ignore due to project level config
+                -- Allow auto discover :  configuration = vim.fn.expand("~/.config/ruff/ruff.toml"), -- INFO: its much simple to use ruff.toml directly. By default, it will take it but may ignore due to project level config
               },
             },
           },
 
-          jedi_language_server = {},
+          -- jedi_language_server = {},
 
           -- INFO: Javascript  / Typescript LSP setup
+          prettierd = {},
+          biome = {},
 
           -- INFO: `vtsls` config from https://www.lazyvim.org/extras/lang/typescript
           vtsls = {
@@ -243,9 +256,30 @@ return {
                   },
                 },
               },
-              javascript = { -- TODO: copy from typescript (better use common variable for both)
+              -- TODO: copy from typescript (better use common variable for both)
+              -- XXX: everything expect referencesCodeLens is added by ChatGpt haha
+              javascript = {
+                checkJs = true,
+
+                suggest = {
+                  completeFunctionCalls = true,
+                },
+
                 -- show like "3 references" but it is not working right now  TODO: fix it
-                referencesCodeLens = { enabled = true, showOnAllFunctions = true },
+                referencesCodeLens = {
+                  enabled = true,
+                  showOnAllFunctions = true,
+                },
+
+                --   Better hinting (helps understand DOM types)
+                inlayHints = {
+                  variableTypes = { enabled = true },
+                  functionLikeReturnTypes = { enabled = true },
+                  parameterNames = {
+                    enabled = "all",
+                    suppressWhenArgumentMatchesName = true,
+                  },
+                },
               },
               typescript = {
                 -- XXX: [VSCode ONLY] Show references/implementations code lens on all functions

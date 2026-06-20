@@ -1,6 +1,14 @@
 return { -- Adds git related signs to the gutter, as well as utilities for managing changes
   "lewis6991/gitsigns.nvim",
   opts = {
+    current_line_blame = true,
+    current_line_blame_formatter = " <author>, <author_time:%R> • <summary>",
+    current_line_blame_opts = {
+      virt_text = true,
+      virt_text_pos = "right_align",
+      delay = 300,
+    },
+
     on_attach = function(buf)
       local map = function(mode, keys, func, desc, desc_prefix)
         desc_prefix = desc_prefix or "GitSigns: "
@@ -56,4 +64,14 @@ return { -- Adds git related signs to the gutter, as well as utilities for manag
       map("n", "<leader>gtD", gitsigns.toggle_deleted, "[G]it [T]oggle show [D]eleted")
     end,
   },
+
+  config = function(_, opts)
+    require("gitsigns").setup(opts)
+
+    -- Override the default highlight for GitSignsCurrentLineBlame to make it more subtle
+    vim.api.nvim_set_hl(0, "GitSignsCurrentLineBlame", {
+      fg = "#c0c0c0",
+      italic = true,
+    })
+  end,
 }

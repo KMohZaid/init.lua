@@ -2,8 +2,8 @@ return {
   -- add catppuccin
   {
     "catppuccin/nvim",
-    lazy = true,
     name = "catppuccin",
+    priority = 10000,
     opts = {
       flavour = "mocha",
       lsp_styles = {

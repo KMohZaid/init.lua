@@ -39,7 +39,6 @@ return { -- Autoformat
       -- python = { 'isort', 'black' },
       python = {
         "ruff_fix",
-        "custom_isort_only_float_to_top",
         "ruff_organize_imports",
         "ruff_format",
         stop_after_first = false, --
@@ -56,7 +55,7 @@ return { -- Autoformat
       typescriptreact = { "prettierd", "biome-check", stop_after_first = true },
     },
     formatters = {
-      custom_isort_only_float_to_top = {
+      custom_isort_only_float_to_top = { -- not using for now, i think its good to not float on top and manually move iff have to
         command = "isort",
         stdin = true,
         args = {
